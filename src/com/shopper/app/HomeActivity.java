@@ -1,6 +1,7 @@
 package com.shopper.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,10 +40,12 @@ public class HomeActivity extends Activity
     }
 
     private View.OnClickListener onSave=new View.OnClickListener() {
+        Intent intent;
 
         @Override
         public void onClick(View view) {
-            //To change body of implemented methods use File | Settings | File Templates.
+            intent = new Intent(HomeActivity.this, BarcodeScannerActivity.class);
+            startActivity(intent);
         }
     };
 
