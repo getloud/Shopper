@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/barcodepicker"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
+
 
 </RelativeLayout>
 
@@ -10,30 +12,8 @@
 
 
 
-
-        <!--RelativeLayout.LayoutParams rParams;-->
-
-        <!--mBarcodePicker = new ScanditSDKBarcodePicker(HomeActivity.this, sScanditSdkAppKey);-->
-
-        <!--// Register listener, in order to be notified about relevant events-->
-        <!--// (e.g. a recognized bar code).-->
-        <!--mBarcodePicker.getOverlayView().addListener(HomeActivity.this);-->
-
-        <!--rParams = new RelativeLayout.LayoutParams(-->
-        <!--ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);-->
-        <!--rParams.addRule(RelativeLayout.CENTER_HORIZONTAL);-->
-        <!--rParams.bottomMargin = 20;-->
-        <!--rootView.addView(mBarcodePicker, rParams);-->
-
-
-        <!--WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);-->
-        <!--Display display = wm.getDefaultDisplay();-->
-        <!--TextView overlay = new TextView(HomeActivity.this);-->
-        <!--rParams = new RelativeLayout.LayoutParams(-->
-        <!--ViewGroup.LayoutParams.FILL_PARENT, display.getHeight() / 2);-->
-        <!--rParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);-->
-        <!--overlay.setBackgroundColor(0xFF000000);-->
-        <!--rootView.addView(overlay, rParams);-->
-        <!--overlay.setText("Touch to close");-->
-        <!--overlay.setGravity(Gravity.CENTER);-->
-        <!--overlay.setTextColor(0xFFFFFFFF);-->
+<!--<com.mirasense.scanditsdk.ScanditSDKBarcodePicker-->
+<!--android:id="@+id/barcodepicker"-->
+<!--android:layout_width="fill_parent"-->
+<!--android:layout_height="fill_parent">-->
+<!--</com.mirasense.scanditsdk.ScanditSDKBarcodePicker>-->
