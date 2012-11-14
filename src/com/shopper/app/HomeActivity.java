@@ -15,9 +15,7 @@ public class HomeActivity extends Activity
     Button history = null;
     Button settings = null;
 
-    // Enter your Scandit SDK App key here.
-    // Your Scandit SDK App key is available via your Scandit SDK web account.
-    private static final String sScanditSdkAppKey = "Yvp9bigUEeKTw9VYgI/qxGfIGtDU8x5COBTQEkhsdfM";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

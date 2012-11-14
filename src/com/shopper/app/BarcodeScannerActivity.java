@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 
@@ -19,6 +20,7 @@ import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 public class BarcodeScannerActivity extends Activity implements ScanditSDKListener {
     // The main object for scanning barcodes.
     private ScanditSDKBarcodePicker mBarcodePicker = null;
+    TextView barcodeValue = null;
 
     // RelativeLayout rootView = new RelativeLayout(this);
 
@@ -32,6 +34,7 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
         setContentView(R.layout.scanned_barcode_layout);
 
         RelativeLayout rlay  = (RelativeLayout) findViewById(R.id.barcodepicker);
+        barcodeValue = (TextView) findViewById(R.id.barcode);
 
         mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
         //  mBarcodePicker = (ScanditSDKBarcodePicker) findViewById(R.id.barcodepicker);
@@ -164,7 +167,8 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 
 //        TextView barcodeField = (TextView) findViewById(R.id.overlay);
 //         overlay.setText(barcode);
-        mBarcodePicker.stopScanning();
+        barcodeValue.setText(barcode);
+       // mBarcodePicker.stopScanning();
 
     }
 
