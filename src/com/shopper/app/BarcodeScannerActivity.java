@@ -19,6 +19,7 @@ import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
  */
 public class BarcodeScannerActivity extends Activity implements ScanditSDKListener {
     // The main object for scanning barcodes.
+
     private ScanditSDKBarcodePicker mBarcodePicker = null;
     TextView barcodeValue = null;
 
@@ -26,7 +27,7 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
-    private static final String sScanditSdkAppKey = "Yvp9bigUEeKTw9VYgI/qxGfIGtDU8x5COBTQEkhsdfM";
+    private static final String sScanditSdkAppKey = String.valueOf(R.string.app_key);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
