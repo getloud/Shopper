@@ -1,9 +1,7 @@
 package com.shopper.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,8 +21,6 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
     private ScanditSDKBarcodePicker mBarcodePicker = null;
     TextView barcodeValue = null;
 
-    // RelativeLayout rootView = new RelativeLayout(this);
-
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
     private static final String sScanditSdkAppKey = String.valueOf(R.string.app_key);
@@ -32,22 +28,18 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scanned_barcode_layout);
 
+        //screen always turn on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        setContentView(R.layout.scanned_barcode_layout);
         RelativeLayout rlay  = (RelativeLayout) findViewById(R.id.barcodepicker);
         barcodeValue = (TextView) findViewById(R.id.barcode);
-
         mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
-        //  mBarcodePicker = (ScanditSDKBarcodePicker) findViewById(R.id.barcodepicker);
         // Register listener, in order to be notified about relevant events
         // (e.g. a recognized bar code).
         mBarcodePicker.getOverlayView().addListener(BarcodeScannerActivity.this);
-
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-
         rlay.addView(mBarcodePicker);
-
         mBarcodePicker.setScanningHotSpot(0.5f, 0.25f);
         mBarcodePicker.getOverlayView().setInfoBannerY(0.4f);
         mBarcodePicker.startScanning();
