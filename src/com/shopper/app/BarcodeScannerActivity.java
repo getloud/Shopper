@@ -1,8 +1,12 @@
 package com.shopper.app;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
@@ -20,6 +24,9 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 
     private ScanditSDKBarcodePicker mBarcodePicker = null;
     TextView barcodeValue = null;
+    EditText productName = null;
+    DBShopper dbShopper;
+    Cursor c;
 
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
@@ -34,7 +41,9 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 
         setContentView(R.layout.scanned_barcode_layout);
         RelativeLayout rlay  = (RelativeLayout) findViewById(R.id.barcodepicker);
-        barcodeValue = (TextView) findViewById(R.id.barcode);
+       barcodeValue = (TextView) findViewById(R.id.barcode);
+        productName = (EditText) findViewById(R.id.productName);
+
         mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
         // Register listener, in order to be notified about relevant events
         // (e.g. a recognized bar code).
@@ -43,6 +52,11 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
         mBarcodePicker.setScanningHotSpot(0.5f, 0.25f);
         mBarcodePicker.getOverlayView().setInfoBannerY(0.4f);
         mBarcodePicker.startScanning();
+
+        dbShopper = new DBShopper(this);
+
+
+
     }
 
 
@@ -148,19 +162,38 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
      *  @param symbology Scanned barcode symbology.
      */
     public void didScanBarcode(String barcode, String symbology) {
-        // Example code that would typically be used in a real-world app using
-        // the Scandit SDK.
-        /*
-          // Access the image in which the bar code has been recognized.
-          byte[] imageDataNV21Encoded = barcodePicker.getCameraPreviewImageOfFirstBarcodeRecognition();
-          int imageWidth = barcodePicker.getCameraPreviewImageWidth();
-          int imageHeight = barcodePicker.getCameraPreviewImageHeight();
+        SQLiteDatabase  db = dbShopper.getWritableDatabase();
+        String LOG_TAG = "my log!!!!!!!!!!!!";
+        Log.d(LOG_TAG, "id = " + db.findEditTable("products") );
 
-          Stop recognition to save resources.      */
-
-//        TextView barcodeField = (TextView) findViewById(R.id.overlay);
-//         overlay.setText(barcode);
+         c = db.query("products", null, null, null, null, null, null);
+        Log.d(LOG_TAG, "id = " +c );
+        if (c.getCount() == 0) {  productName.setText("NO");
+            Log.d(LOG_TAG, "no content" );
+        }
         barcodeValue.setText(barcode);
+       String selection = "barcodeNumber == ?";
+       String column = "productName" ;
+        String[] columns = new String[] {column};
+       String[] selectionArgs = new String[] {barcode};
+        c = db.query("products", columns, selection, selectionArgs, null, null, null);
+        String name ="";
+        if (c.moveToFirst()) {
+            int nameColIndex = c.getColumnIndex("productName");
+            String name1 ="";
+            do {
+                      name= c.getString(nameColIndex) ;
+                productName.setText(name);
+
+            } while (c.moveToNext());
+        } else
+        {productName.setText("NO");     }
+
+        dbShopper.close();
+
+
+
+
        // mBarcodePicker.stopScanning();
 
     }
