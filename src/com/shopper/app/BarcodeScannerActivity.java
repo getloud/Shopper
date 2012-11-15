@@ -188,7 +188,7 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 
             } while (c.moveToNext());
         } else
-        {productName.setText("NO");     }
+        {productName.setText("NO prod");     }
 
         dbShopper.close();
 

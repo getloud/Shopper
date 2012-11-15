@@ -17,9 +17,9 @@ public class DBShopper  extends SQLiteOpenHelper {
 
     int[] productID = { 1, 2, 3, 4 };
     String[] productName = { "Lipton tea", "растишка", "Twix", "Nutella" };
-    String[] barcodeNumber = { "4016032213093", "4016032213094", "4016032213095", "4016032213096" };
-    float[] price = {8.5f, 3.0f, 5.3f, 3.60f };
-    String[] measurmentUnit = {"item","item","item","item"};
+    String[] barcodeNumber = { "4016032213093", "737052339238", "4016032213095", "4016032213096" };
+    double[] price = {8.5, 3.0, 5.3, 3.60 };
+    String[] measurementUnit = {"item","item","item","item"};
     int[] discount = {0, 0, 0, 0};
     final String LOG_TAG = "myLogs";
 
@@ -41,9 +41,9 @@ public class DBShopper  extends SQLiteOpenHelper {
         db.execSQL("create table products ("
                 + "productID integer primary key,"
                 + "productName text,"
-                + "barcodeNumber integer"
-                + "price float"
-                + "measurmentUnit text,"
+                + "barcodeNumber integer,"
+                + "price float,"
+                + "measurementUnit text,"
                 + "discount integer"
                 + ");");
 // заполняем ее
@@ -53,7 +53,7 @@ public class DBShopper  extends SQLiteOpenHelper {
             cv.put("productName", productName[i]);
             cv.put("barcodeNumber", barcodeNumber[i]);
             cv.put("price", price[i]);
-            cv.put("measurmentUnit", measurmentUnit[i]);
+            cv.put("measurementUnit", measurementUnit[i]);
             cv.put("discount", discount[i]);
             db.insert("products", null, cv);
         }
