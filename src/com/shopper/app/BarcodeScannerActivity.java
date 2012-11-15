@@ -26,7 +26,7 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
     TextView barcodeValue = null;
     EditText productName = null;
     DBShopper dbShopper;
-    Cursor c;
+    Cursor c = null;
 
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
@@ -164,9 +164,10 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
     public void didScanBarcode(String barcode, String symbology) {
         SQLiteDatabase  db = dbShopper.getWritableDatabase();
         String LOG_TAG = "my log!!!!!!!!!!!!";
+        String table ="products";
         Log.d(LOG_TAG, "id = " + db.findEditTable("products") );
 
-         c = db.query("products", null, null, null, null, null, null);
+         c = db.query(table, null, null, null, null, null, null);
         Log.d(LOG_TAG, "id = " +c );
         if (c.getCount() == 0) {  productName.setText("NO");
             Log.d(LOG_TAG, "no content" );

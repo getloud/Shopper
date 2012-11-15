@@ -36,6 +36,7 @@ public class DBShopper  extends SQLiteOpenHelper {
 // создаем таблицу с полями
         ContentValues cv = new ContentValues();
 
+
 // создаем таблицу должностей
         db.execSQL("create table products ("
                 + "productID integer primary key,"
