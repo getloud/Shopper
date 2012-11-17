@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/cart"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:stretchColumns="1"
+             android:shrinkColumns="1"
+             android:paddingTop="4dip"
+             android:background="@android:color/darker_gray">
+
+    <TableRow
+            android:layout_marginTop="35dp">
+        <TextView android:text="Cart Name:"
+                android:textColor="@android:color/black"/>
+        <EditText android:id="@+id/cartName"
+                />
+    </TableRow>
+    <TableRow
+            android:layout_marginBottom="35dp">
+        <TextView android:text="Money:"
+                  android:textColor="@android:color/black"/>
+        <EditText android:id="@+id/money" />
+    </TableRow>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+          >
+
+            <Button android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:layout_weight="1"
+                    />
+            <Button android:id="@+id/cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:layout_weight="1"
+                    />
+    </LinearLayout>
+</TableLayout>

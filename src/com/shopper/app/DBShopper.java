@@ -42,10 +42,21 @@ public class DBShopper  extends SQLiteOpenHelper {
                 + "productID integer primary key,"
                 + "productName text,"
                 + "barcodeNumber integer,"
-                + "price float,"
+                + "price double,"
                 + "measurementUnit text,"
                 + "discount integer"
                 + ");");
+
+        // создаем таблицу людей
+        db.execSQL("create table carts ("
+                + "cartID integer primary key autoincrement,"
+                + "cartName text,"
+                + "money double,"
+                + "allPrice double,"
+                + "startDate datetime,"
+                + "endDate datetime"
+                + ");");
+
 // заполняем ее
         for (int i = 0; i < productID.length; i++) {
             cv.clear();
@@ -57,13 +68,9 @@ public class DBShopper  extends SQLiteOpenHelper {
             cv.put("discount", discount[i]);
             db.insert("products", null, cv);
         }
+
+
     }
-//// создаем таблицу людей
-//        db.execSQL("create table people ("
-//                + "id integer primary key autoincrement,"
-//                + "name text,"
-//                + "posid integer"
-//                + ");");
 //// заполняем ее
 //        for (int i = 0; i < people_name.length; i++) {
 //            cv.clear();
