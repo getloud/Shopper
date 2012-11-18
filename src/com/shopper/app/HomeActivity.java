@@ -89,6 +89,7 @@ public class HomeActivity extends Activity   implements View.OnClickListener
                     dbShopper.close();
 
                     intent = new Intent(HomeActivity.this, BarcodeScannerActivity.class);
+                     intent.putExtra("cartID", rowID);
                     startActivity(intent);
                     mpopup.dismiss();
                 }

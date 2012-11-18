@@ -17,7 +17,7 @@ public class DBShopper  extends SQLiteOpenHelper {
 
     int[] productID = { 1, 2, 3, 4 };
     String[] productName = { "Lipton tea", "растишка", "Twix", "Nutella" };
-    String[] barcodeNumber = { "4016032213093", "737052339238", "4016032213095", "4016032213096" };
+    String[] barcodeNumber = { "4016032213093", "737052339238", "8011530600006", "4016032213096" };
     double[] price = {8.5, 3.0, 5.3, 3.60 };
     String[] measurementUnit = {"item","item","item","item"};
     int[] discount = {0, 0, 0, 0};
@@ -39,7 +39,7 @@ public class DBShopper  extends SQLiteOpenHelper {
 
 // создаем таблицу должностей
         db.execSQL("create table products ("
-                + "productID integer primary key,"
+                + "productID integer primary key autoincrement,"
                 + "productName text,"
                 + "barcodeNumber integer,"
                 + "price double,"
@@ -55,6 +55,15 @@ public class DBShopper  extends SQLiteOpenHelper {
                 + "allPrice double,"
                 + "startDate datetime,"
                 + "endDate datetime"
+                + ");");
+
+        // создаем таблицу людей
+        db.execSQL("create table orders ("
+                + "orderID integer primary key autoincrement,"
+                + "cartID integer,"
+                + "productID integer,"
+                + "amount integer,"
+                + "totalPrice double"
                 + ");");
 
 // заполняем ее

@@ -1,14 +1,16 @@
 package com.shopper.app;
 
 import android.app.Activity;
+import android.app.TabActivity;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 
@@ -19,14 +21,21 @@ import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
  * Time: 3:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BarcodeScannerActivity extends Activity implements ScanditSDKListener {
+public class BarcodeScannerActivity extends TabActivity implements ScanditSDKListener, View.OnClickListener {
     // The main object for scanning barcodes.
 
+
+
     private ScanditSDKBarcodePicker mBarcodePicker = null;
-    TextView barcodeValue = null;
+    EditText productBarcode = null;
     EditText productName = null;
-    DBShopper dbShopper;
+    EditText productPrice = null;
+    EditText amount = null;
     Cursor c = null;
+    Button addProduct = null;
+    String cartID = "";
+    String productID = "";
+
 
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
@@ -40,99 +49,68 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.scanned_barcode_layout);
-        RelativeLayout rlay  = (RelativeLayout) findViewById(R.id.barcodepicker);
-       barcodeValue = (TextView) findViewById(R.id.barcode);
+        RelativeLayout rlay = (RelativeLayout) findViewById(R.id.barcodepicker);
+        productBarcode = (EditText) findViewById(R.id.barcode);
         productName = (EditText) findViewById(R.id.productName);
+        productPrice = (EditText) findViewById(R.id.price);
+        amount = (EditText) findViewById(R.id.amount);
+        addProduct =(Button)findViewById(R.id.addProduct);
+
+
 
         mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
         // Register listener, in order to be notified about relevant events
         // (e.g. a recognized bar code).
         mBarcodePicker.getOverlayView().addListener(BarcodeScannerActivity.this);
         rlay.addView(mBarcodePicker);
-        mBarcodePicker.setScanningHotSpot(0.5f, 0.25f);
-        mBarcodePicker.getOverlayView().setInfoBannerY(0.4f);
+        mBarcodePicker.setScanningHotSpot(0.5f, 0.4f);
+        mBarcodePicker.getOverlayView().setInfoBannerY(0.1f);
         mBarcodePicker.startScanning();
 
-        dbShopper = new DBShopper(this);
 
 
+        TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
+        spec.setContent(R.id.scannerTab);
+        spec.setIndicator("Scanner", getResources().getDrawable(R.drawable.list));
+        getTabHost().addTab(spec);
 
+        spec = getTabHost().newTabSpec("tag2");
+        spec.setContent(R.id.productsTab);
+        spec.setIndicator("Products", getResources().getDrawable(R.drawable.restaurant));
+        getTabHost().addTab(spec);
+
+        getTabHost().setCurrentTab(0);
+
+
+        addProduct.setOnClickListener(this);
+
+        Intent intent = getIntent();
+        cartID = intent.getStringExtra("cartID");
     }
 
+    @Override
+    public void onClick(View view) {
+        DBShopper dbShopper = new DBShopper(this);
+        SQLiteDatabase db = dbShopper.getWritableDatabase();
+        switch (view.getId()) {
+            case R.id.addProduct:
+                ContentValues cv = new ContentValues();
 
-    /**
-     * Creates a button that shows how to add a cropped version of the full
-     * screen Scandit SDK scanner. The cropping is accomplished by overlaying
-     * parts of the scanner with an opaque view.
-     *
-     *
-     * @return Button that places a scanner on rootView.
-     */
-//     private Button createCroppedOverlayButton(final RelativeLayout rootView) {
-//       Button button = new Button(this);
-//        button.setText("Scan");
-//       RelativeLayout.LayoutParams rParams = new RelativeLayout.LayoutParams(
-//               ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        rParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-//        rParams.bottomMargin = 10;
-//        rootView.addView(button, rParams);
-//    button.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            RelativeLayout.LayoutParams rParams;
-//
-//   mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
-//
-//            // Register listener, in order to be notified about relevant events
-//            // (e.g. a recognized bar code).
-//            mBarcodePicker.getOverlayView().addListener(HomeActivity.this);
-//
-//            rParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-//            rParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-//            rParams.bottomMargin = 20;
-//            rootView.addView(mBarcodePicker, rParams);
+                int productAmount = Integer.parseInt(amount.getText().toString());
+                double totalPrice =  ((double)(productAmount)*Double.parseDouble(productPrice.getText().toString()));
 
+                cv.put("cartID", cartID);
+                cv.put("productID", productID);
+                cv.put("amount",productAmount );
+                cv.put("totalPrice", totalPrice);
 
-//
-//
-//            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//            Display display = wm.getDefaultDisplay();
-//
-//            TextView overlay = new TextView(HomeActivity.this);
-//            rParams = new RelativeLayout.LayoutParams(
-//                    ViewGroup.LayoutParams.FILL_PARENT, display.getHeight() / 2);
-//            rParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//            overlay.setBackgroundColor(0xFF000000);
-//            rootView.addView(overlay, rParams);
-//
-//
-//
-//            overlay.setText("Touch to close");
-//            overlay.setGravity(Gravity.CENTER);
-//            overlay.setTextColor(0xFFFFFFFF);
-//            overlay.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    rootView.removeView(v);
-//                    rootView.removeView(mBarcodePicker);
-//                    mBarcodePicker.stopScanning();
-//                    mBarcodePicker.setScanningHotSpot(0.5f, 0.5f);
-//                    mBarcodePicker = null;
-//                }
-//            });
-//            mBarcodePicker.setScanningHotSpot(0.5f, 0.25f);
-//            mBarcodePicker.getOverlayView().setInfoBannerY(0.4f);
-//            mBarcodePicker.startScanning();
-//        }
-//    });
-//     Must be able to run the portrait version for this button to work.
-//    if (!ScanditSDKBarcodePicker.canRunPortraitPicker()) {
-//        button.setEnabled(false);
-//    }
-//
-//       return button;
-//    }
+                long rowID = db.insert("orders", null, cv);
+                Log.d("my_logs", "row inserted, ID = " + rowID);
 
+                dbShopper.close();
+                break;
+        }
+    }
     @Override
     protected void onPause() {
         // When the activity is in the background immediately stop the
@@ -156,46 +134,42 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
     }
 
     /**
-     *  Called when a barcode has been decoded successfully.
+     * Called when a barcode has been decoded successfully.
      *
-     *  @param barcode Scanned barcode content.
-     *  @param symbology Scanned barcode symbology.
+     * @param barcode   Scanned barcode content.
+     * @param symbology Scanned barcode symbology.
      */
     public void didScanBarcode(String barcode, String symbology) {
-        SQLiteDatabase  db = dbShopper.getWritableDatabase();
-        String LOG_TAG = "my log!!!!!!!!!!!!";
-        String table ="products";
-        Log.d(LOG_TAG, "id = " + db.findEditTable("products") );
+        DBShopper dbShopper = new DBShopper(this);
+        SQLiteDatabase db = dbShopper.getWritableDatabase();
 
-         c = db.query(table, null, null, null, null, null, null);
-        Log.d(LOG_TAG, "id = " +c );
-        if (c.getCount() == 0) {  productName.setText("NO");
-            Log.d(LOG_TAG, "no content" );
-        }
-        barcodeValue.setText(barcode);
-       String selection = "barcodeNumber == ?";
-       String column = "productName" ;
-        String[] columns = new String[] {column};
-       String[] selectionArgs = new String[] {barcode};
+        productBarcode.setText(barcode);
+        String selection = "barcodeNumber == ?";
+        String column = "productID, productName, price";
+        String[] columns = new String[]{column};
+        String[] selectionArgs = new String[]{barcode};
         c = db.query("products", columns, selection, selectionArgs, null, null, null);
-        String name ="";
+
         if (c.moveToFirst()) {
+
+            int idColIndex = c.getColumnIndex("productID");
             int nameColIndex = c.getColumnIndex("productName");
-            String name1 ="";
+            int priceColIndex = c.getColumnIndex("price");
             do {
-                      name= c.getString(nameColIndex) ;
-                productName.setText(name);
+
+                productID = c.getString(idColIndex);
+                productName.setText(c.getString(nameColIndex));
+                productPrice.setText(c.getString(priceColIndex));
 
             } while (c.moveToNext());
-        } else
-        {productName.setText("NO prod");     }
+        } else {
+            productName.setText("NO prod");
+        }
 
         dbShopper.close();
 
 
-
-
-       // mBarcodePicker.stopScanning();
+        // mBarcodePicker.stopScanning();
 
     }
 
@@ -260,5 +234,6 @@ public class BarcodeScannerActivity extends Activity implements ScanditSDKListen
 //	@Override
 //	public void onProviderEnabled(String arg0) {}
 //
-    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
+    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+    }
 }

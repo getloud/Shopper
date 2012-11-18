@@ -1,37 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      android:layout_width="fill_parent"
-                      android:layout_height="fill_parent">
-
-
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
     <RelativeLayout android:id="@+id/barcodepicker"
-                     android:layout_width="fill_parent"
-                     android:layout_height="fill_parent"
-                     android:layout_centerHorizontal="true"
-                     android:layout_marginBottom = "20dp"
-        />
-
-    <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:background="#FF000000"
-
-          >
-    <TextView android:id="@+id/barcode"
-              android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
             />
-    <EditText android:id="@+id/productName"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:clickable="false"
-              android:cursorVisible="false"
-            />
-    </LinearLayout>
 
+    <TabHost android:id="@android:id/tabhost"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+            >
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TabWidget android:id="@android:id/tabs"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="#FF000000"
+
+                    />
+            <TextView android:id="@+id/barstatus"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center_vertical"
+                      android:text=""
+                      android:textStyle="bold"/>
+
+            <FrameLayout android:id="@android:id/tabcontent"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                    >
+
+                <ScrollView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="200dip"
+                        android:paddingTop="4dip"
+                        android:background="#FF000000"
+                        android:layout_gravity="bottom|center">
+                <TableLayout android:id="@+id/scannerTab"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:stretchColumns="1"
+                             android:shrinkColumns="1"
+
+                        >
+                    <TableRow>
+                        <TextView android:text="Barcode:"/>
+                        <EditText android:id="@+id/barcode"
+                                  android:editable="false"
+                                  android:cursorVisible="false"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Product:"/>
+                        <EditText android:id="@+id/productName"
+                                  android:editable="false"
+                                  android:cursorVisible="false"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Price:"/>
+                        <EditText android:id="@+id/price"
+                                  android:editable="false"
+                                  android:cursorVisible="false"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Amount:"/>
+                        <EditText android:id="@+id/amount"/>
+                    </TableRow>
+
+                    <Button android:id="@+id/addProduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Add"
+                            />
+
+                </TableLayout>
+                </ScrollView>
+
+
+                <ListView android:id="@+id/productsTab"
+                          android:layout_width="match_parent"
+                          android:layout_height="match_parent"
+                          android:background="#FF000000"
+                        />
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </RelativeLayout>
 
