@@ -12,9 +12,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="BarcodeScannerActivity" >
-        </activity>
         <activity android:name=".CartsListActivity"/>
+        <activity android:name=".CartTabsActivity"/>
+        <activity android:name=".ProductsListActivity"/>
+        <activity android:name=".ScannerActivity"/>
     </application>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>

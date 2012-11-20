@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+    <RelativeLayout android:id="@+id/barcodepicker"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+            />
+                <ScrollView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="200dip"
+                        android:paddingTop="4dip"
+                        android:background="#FF000000"
+                        android:layout_alignParentBottom ="true"
+                        >
+
+                    <TableLayout android:id="@+id/scannerTab"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:stretchColumns="1"
+                                 android:shrinkColumns="1"
+                            >
+                        <TableRow>
+                            <TextView android:text="Barcode:"/>
+                            <EditText android:id="@+id/barcode"
+                                      android:editable="false"
+                                      android:cursorVisible="false"/>
+                        </TableRow>
+                        <TableRow>
+                            <TextView android:text="Product:"/>
+                            <EditText android:id="@+id/productName"
+                                      android:editable="false"
+                                      android:cursorVisible="false"/>
+                        </TableRow>
+                        <TableRow>
+                            <TextView android:text="Price:"/>
+                            <EditText android:id="@+id/price"
+                                      android:editable="false"
+                                      android:cursorVisible="false"/>
+                        </TableRow>
+                        <TableRow>
+                            <TextView android:text="Amount:"/>
+                            <EditText android:id="@+id/amount"/>
+                        </TableRow>
+
+                        <Button android:id="@+id/addProduct"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Add"
+                                />
+
+                    </TableLayout>
+                </ScrollView>
+
+</RelativeLayout>
+

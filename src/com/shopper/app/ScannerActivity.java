@@ -1,7 +1,6 @@
 package com.shopper.app;
 
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,21 +9,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 
 /**
  * Created with IntelliJ IDEA.
  * User: oleksandr.lezvinskyi
- * Date: 11/13/12
- * Time: 3:46 PM
+ * Date: 11/20/12
+ * Time: 12:29 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BarcodeScannerActivity extends TabActivity implements ScanditSDKListener, View.OnClickListener {
-    // The main object for scanning barcodes.
-
-
+public class ScannerActivity extends Activity implements ScanditSDKListener, View.OnClickListener {
 
     private ScanditSDKBarcodePicker mBarcodePicker = null;
     EditText productBarcode = null;
@@ -36,19 +34,17 @@ public class BarcodeScannerActivity extends TabActivity implements ScanditSDKLis
     String cartID = "";
     String productID = "";
 
-
     // Enter your Scandit SDK App key here.
     // Your Scandit SDK App key is available via your Scandit SDK web account.
     private static final String sScanditSdkAppKey = String.valueOf(R.string.app_key);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //screen always turn on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.scanned_barcode_layout);
+        setContentView(R.layout.scanner_layout);
         RelativeLayout rlay = (RelativeLayout) findViewById(R.id.barcodepicker);
         productBarcode = (EditText) findViewById(R.id.barcode);
         productName = (EditText) findViewById(R.id.productName);
@@ -58,29 +54,14 @@ public class BarcodeScannerActivity extends TabActivity implements ScanditSDKLis
 
 
 
-        mBarcodePicker = new ScanditSDKBarcodePicker(BarcodeScannerActivity.this, sScanditSdkAppKey);
+        mBarcodePicker = new ScanditSDKBarcodePicker(ScannerActivity.this, sScanditSdkAppKey);
         // Register listener, in order to be notified about relevant events
         // (e.g. a recognized bar code).
-        mBarcodePicker.getOverlayView().addListener(BarcodeScannerActivity.this);
+        mBarcodePicker.getOverlayView().addListener(ScannerActivity.this);
         rlay.addView(mBarcodePicker);
-        mBarcodePicker.setScanningHotSpot(0.5f, 0.4f);
+        mBarcodePicker.setScanningHotSpot(0.5f, 0.3f);
         mBarcodePicker.getOverlayView().setInfoBannerY(0.1f);
         mBarcodePicker.startScanning();
-
-
-
-        TabHost.TabSpec spec = getTabHost().newTabSpec("tag1");
-        spec.setContent(R.id.scannerTab);
-        spec.setIndicator("Scanner", getResources().getDrawable(R.drawable.list));
-        getTabHost().addTab(spec);
-
-        spec = getTabHost().newTabSpec("tag2");
-        spec.setContent(R.id.productsTab);
-        spec.setIndicator("Products", getResources().getDrawable(R.drawable.restaurant));
-        getTabHost().addTab(spec);
-
-        getTabHost().setCurrentTab(0);
-
 
         addProduct.setOnClickListener(this);
 
@@ -110,6 +91,11 @@ public class BarcodeScannerActivity extends TabActivity implements ScanditSDKLis
                 dbShopper.close();
                 break;
         }
+    }
+
+    @Override
+    public void didCancel() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
     @Override
     protected void onPause() {
@@ -190,10 +176,6 @@ public class BarcodeScannerActivity extends TabActivity implements ScanditSDKLis
           // Stop recognition to save resources.
           mBarcodePicker.stopScanning();
           */
-    }
-
-    @Override
-    public void didCancel() {
     }
 
     @Override
