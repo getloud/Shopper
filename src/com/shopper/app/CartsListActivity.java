@@ -20,9 +20,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class CartsListActivity extends Activity {
-    ImageView image = null;
-    TextView cartName = null;
-    TextView startDate = null;
     Cursor c = null;
     DBShopper dbShopper;
   List<Cart> model= new ArrayList<Cart>();

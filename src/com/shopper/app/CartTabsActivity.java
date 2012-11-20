@@ -26,10 +26,13 @@ public class CartTabsActivity extends TabActivity {
 
         Intent intent = getIntent();
         cartID = intent.getStringExtra("cartID");
+
+
         Intent intent1 = new Intent(this, ScannerActivity.class);
-        intent.putExtra("cartID", cartID);
+        intent1.putExtra("cartID", cartID);
 
        Intent intent2 =  new Intent(this,ProductsListActivity.class);
+       intent2.putExtra("cartID", cartID);
 
         /** TabHost will have Tabs */
         tabHost = (TabHost)findViewById(android.R.id.tabhost);

@@ -1,7 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:id="@+id/productRow"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:padding="4dip"
 
+        >
+    <TextView android:id="@+id/productNameRow"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:textStyle="bold"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+            />
+
+    <TextView android:id="@+id/productPriceRow"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:textStyle="bold"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+            />
+    <TextView android:id="@+id/productAmountRow"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+            />
+    <TextView android:id="@+id/productTotalPrRow"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center_vertical"
+              android:maxLines="1"
+              android:ellipsize="end"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+            />
 </LinearLayout>

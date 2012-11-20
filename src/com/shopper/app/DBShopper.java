@@ -57,6 +57,7 @@ public class DBShopper  extends SQLiteOpenHelper {
                 + "endDate datetime"
                 + ");");
 
+
         // создаем таблицу людей
         db.execSQL("create table orders ("
                 + "orderID integer primary key autoincrement,"
