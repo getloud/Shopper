@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,21 +44,18 @@ public class ProductsListActivity extends Activity {
 
         dbShopper = new DBShopper(this);
         SQLiteDatabase db = dbShopper.getWritableDatabase();
-       // String[] columns = new String[] {"productName","price"};
 
-        String sqlQuery = "select PR.productName as productName, PR.price as productPrice, OD.amount as productAmount, OD.totalPrice as totalPrice "
-                + "from products as PR "
-                + "inner join orders as OD "
-                + "on PR.productID = OD.productID "
-                + "where OD.cartID == ?";
+        String table = "products as PR inner join orders as OD on PR.productID = OD.productID";
+        String columns[] = { "PR.productName as Name", "PR.price as Price", "OD.amount as Amount", "OD.totalPrice as totalPr" };
+        String selection = "OD.cartID == ?";
+        String[] selectionArgs = {"cartID"};
+        c = db.query(table, columns, selection, selectionArgs, null, null, "OD.orderID " + " DESC");
 
-        c = db.rawQuery(sqlQuery, new String[] {cartID});
-       // c = db.query("products", columns, null, null, null, null, "productID "+" DESC");
         if (c.moveToFirst()) {
-            int productNameColIndex = c.getColumnIndex("productName");
-            int priceColIndex = c.getColumnIndex("productPrice");
-            int amountColIndex = c.getColumnIndex("productAmount");
-            int totalPriceColIndex = c.getColumnIndex("totalPrice");
+            int productNameColIndex = c.getColumnIndex("tName");
+            int priceColIndex = c.getColumnIndex("Price");
+            int amountColIndex = c.getColumnIndex("Amount");
+            int totalPriceColIndex = c.getColumnIndex("totalPr");
             do {
                 String productName = c.getString(productNameColIndex) ;
                 String productPrice = c.getString(priceColIndex) ;
@@ -65,6 +63,7 @@ public class ProductsListActivity extends Activity {
                 String totalPrice = c.getString(totalPriceColIndex);
                 Product product = new Product(productName,productPrice,productAmount,totalPrice);
                 adapter.add(product);
+                Log.d("product list:::::::::::::::", productName+", "+productPrice+" ,"+ productAmount+", "+totalPrice);
 
             } while (c.moveToNext());
         }
