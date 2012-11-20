@@ -28,7 +28,7 @@ public class ProductsListActivity extends Activity {
     DBShopper dbShopper;
     List<Product> model= new ArrayList<Product>();
     ProductAdapter adapter=null;
-    String  cartID = "";
+    String  cartID ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class ProductsListActivity extends Activity {
         logCursor(c);
 
         if (c.moveToFirst()) {
-            int productNameColIndex = c.getColumnIndex("tName");
+            int productNameColIndex = c.getColumnIndex("Name");
             int priceColIndex = c.getColumnIndex("Price");
             int amountColIndex = c.getColumnIndex("Amount");
             int totalPriceColIndex = c.getColumnIndex("totalPr");

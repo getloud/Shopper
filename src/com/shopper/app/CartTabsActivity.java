@@ -15,7 +15,8 @@ import android.widget.TabHost.TabSpec;
  */
 public class CartTabsActivity extends TabActivity {
     TabHost tabHost;
-    String cartID = "";
+    String cartID;
+    Intent intent;
 
     /** Called when the activity is first created. */
 
@@ -24,7 +25,7 @@ public class CartTabsActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart_tabwidget);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         cartID = intent.getStringExtra("cartID");
 
 

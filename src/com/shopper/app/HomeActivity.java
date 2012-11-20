@@ -25,7 +25,8 @@ public class HomeActivity extends Activity   implements View.OnClickListener
     Button history = null;
     Button settings = null;
     PopupWindow mpopup;
-    Intent intent;
+    Intent intentCartTab;
+    Intent intentHistory;
 
 
     @Override
@@ -88,9 +89,9 @@ public class HomeActivity extends Activity   implements View.OnClickListener
 
                     dbShopper.close();
 
-                    intent = new Intent(HomeActivity.this, CartTabsActivity.class);
-                     intent.putExtra("cartID", rowID);
-                    startActivity(intent);
+                    intentCartTab = new Intent(HomeActivity.this, CartTabsActivity.class);
+                    intentCartTab.putExtra("cartID", String.valueOf(rowID));
+                    startActivity(intentCartTab);
                     mpopup.dismiss();
                 }
             });
@@ -106,8 +107,8 @@ public class HomeActivity extends Activity   implements View.OnClickListener
             });
             break;
                 case R.id.historySh:
-                    intent = new Intent(HomeActivity.this, CartsListActivity.class);
-                    startActivity(intent);
+                    intentHistory = new Intent(HomeActivity.this, CartsListActivity.class);
+                    startActivity(intentHistory);
                 break;
 
             }
