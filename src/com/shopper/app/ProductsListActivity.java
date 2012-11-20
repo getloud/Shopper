@@ -46,10 +46,11 @@ public class ProductsListActivity extends Activity {
         SQLiteDatabase db = dbShopper.getWritableDatabase();
 
         String table = "products as PR inner join orders as OD on PR.productID = OD.productID";
-        String columns[] = { "PR.productName as Name", "PR.price as Price", "OD.amount as Amount", "OD.totalPrice as totalPr" };
+        String columns[] = {"PR.productName as Name", "PR.price as Price", "OD.amount as Amount", "OD.totalPrice as totalPr"};
         String selection = "OD.cartID == ?";
-        String[] selectionArgs = {"cartID"};
+        String[] selectionArgs = {cartID};
         c = db.query(table, columns, selection, selectionArgs, null, null, "OD.orderID " + " DESC");
+        logCursor(c);
 
         if (c.moveToFirst()) {
             int productNameColIndex = c.getColumnIndex("tName");
@@ -73,6 +74,22 @@ public class ProductsListActivity extends Activity {
 
 
 
+    }
+
+    void logCursor(Cursor c) {
+        if (c != null) {
+            if (c.moveToFirst()) {
+                String str;
+                do {
+                    str = "";
+                    for (String cn : c.getColumnNames()) {
+                        str = str.concat(cn + " = " + c.getString(c.getColumnIndex(cn)) + "; ");
+                    }
+                    Log.d("my log", str);
+                } while (c.moveToNext());
+            }
+        } else
+            Log.d("my log", "Cursor is null");
     }
 
     class ProductAdapter extends ArrayAdapter<Product> {

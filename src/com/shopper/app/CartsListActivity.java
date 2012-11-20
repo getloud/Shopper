@@ -38,6 +38,7 @@ public class CartsListActivity extends Activity {
         SQLiteDatabase db = dbShopper.getWritableDatabase();
         String[] columns = new String[] {"cartName","startDate"};
         c = db.query("carts", columns, null, null, null, null, "startDate "+" DESC");
+
         if (c.moveToFirst()) {
             int cartNameColIndex = c.getColumnIndex("cartName");
             int dateColIndex = c.getColumnIndex("startDate");
