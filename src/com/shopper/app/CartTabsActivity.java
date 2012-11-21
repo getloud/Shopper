@@ -49,7 +49,7 @@ public class CartTabsActivity extends TabActivity {
         /** TabSpec setIndicator() is used to set name for the tab. */
         /** TabSpec setContent() is used to set content for a particular tab. */
         firstTabSpec.setIndicator("Scanner", getResources().getDrawable(R.drawable.list)).setContent(intent1);
-        secondTabSpec.setIndicator("Products", getResources().getDrawable(R.drawable.restaurant)).setContent(intent2);
+        secondTabSpec.setIndicator("Products", getResources().getDrawable(R.drawable.restaurant)).setContent(intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
         /** Add tabSpec to the TabHost to display. */
         tabHost.addTab(firstTabSpec);

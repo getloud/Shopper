@@ -134,4 +134,5 @@ public class ProductsListActivity extends Activity {
             hallPrice.setText(pr.getTotalPrice());
         }
     }
+
 }
