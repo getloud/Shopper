@@ -17,6 +17,9 @@ public class CartTabsActivity extends TabActivity {
     TabHost tabHost;
     String cartID;
     Intent intent;
+    Intent intent1 ;
+    Intent intent2;
+
 
     /** Called when the activity is first created. */
 
@@ -29,10 +32,10 @@ public class CartTabsActivity extends TabActivity {
         cartID = intent.getStringExtra("cartID");
 
 
-        Intent intent1 = new Intent(this, ScannerActivity.class);
+        intent1 = new Intent(this, ScannerActivity.class);
         intent1.putExtra("cartID", cartID);
 
-       Intent intent2 =  new Intent(this,ProductsListActivity.class);
+        intent2 =  new Intent(this,ProductsListActivity.class);
        intent2.putExtra("cartID", cartID);
 
         /** TabHost will have Tabs */
@@ -46,6 +49,8 @@ public class CartTabsActivity extends TabActivity {
         TabSpec firstTabSpec = tabHost.newTabSpec("tid1");
         TabSpec secondTabSpec = tabHost.newTabSpec("tid2");
 
+
+
         /** TabSpec setIndicator() is used to set name for the tab. */
         /** TabSpec setContent() is used to set content for a particular tab. */
         firstTabSpec.setIndicator("Scanner", getResources().getDrawable(R.drawable.list)).setContent(intent1);
@@ -55,6 +60,9 @@ public class CartTabsActivity extends TabActivity {
         tabHost.addTab(firstTabSpec);
         tabHost.addTab(secondTabSpec);
 
+
         getTabHost().setCurrentTab(0);
     }
+
+
 }

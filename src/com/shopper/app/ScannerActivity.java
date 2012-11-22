@@ -75,47 +75,28 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         switch (view.getId()) {
             case R.id.addProduct:
 
-                String selection = "cartID == ?";
-                String column = "productID, orderID, amount,totalPrice";
+                String selection = "cartID == ? and productID == ?";
+                String column = "productID, orderID, amount";
                 String[] columns = new String[]{column};
-                String[] selectionArgs = new String[]{cartID};
+                String[] selectionArgs = new String[]{cartID,productID};
                 c = db.query("orders", columns, selection, selectionArgs, null, null, null);
+
                 if (c.moveToFirst()) {
 
                     int idPrColIndex = c.getColumnIndex("productID");
                     int idOrColIndex = c.getColumnIndex("orderID");
-                    int totalPrColIndex = c.getColumnIndex("totalPrice");
                     int amColIndex = c.getColumnIndex("amount");
 
                     do {
 
                         String prdID = c.getString(idPrColIndex);
                         String orID = c.getString(idOrColIndex);
-                        double totalPr = Double.parseDouble(c.getString(totalPrColIndex));
-                        int am = Integer.parseInt(c.getString(amColIndex));
-                        if (productID.equals(prdID)) {
+                         int am = Integer.parseInt(c.getString(amColIndex));
+
                             ContentValues contentV = new ContentValues();
                             contentV.put("amount", am + Integer.parseInt(amount.getText().toString()));
-                            contentV.put("totalPrice", totalPr + Double.parseDouble(productPrice.getText().toString()));
-                            int updCount = db.update("orders", contentV, "orderID = ?", new String[]{orID});
-
-                        } else {
-                            ContentValues cv = new ContentValues();
-
-                            int productAmount = Integer.parseInt(amount.getText().toString());
-                            double totalPrice = ((double) (productAmount) * Double.parseDouble(productPrice.getText().toString()));
-
-                            cv.put("cartID", cartID);
-                            cv.put("productID", productID);
-                            cv.put("amount", productAmount);
-                            cv.put("totalPrice", totalPrice);
-
-                            long rowID = db.insert("orders", null, cv);
-                            Log.d("my_logs", "row inserted, ID = " + rowID);
-
-
-                        }
-
+                            contentV.put("totalPrice", ( am + Integer.parseInt(amount.getText().toString()))* Double.parseDouble(productPrice.getText().toString()));
+                            int updCount = db.update("orders", contentV, "orderID = ? and productID == ?", new String[]{orID, prdID});
 
                     } while (c.moveToNext());
 
@@ -163,7 +144,10 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         if (mBarcodePicker != null) {
             mBarcodePicker.startScanning();
         }
-        super.onResume();
+            super.onResume();
+
+
+
     }
 
     /**

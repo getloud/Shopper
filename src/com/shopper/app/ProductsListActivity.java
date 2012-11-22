@@ -24,6 +24,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ProductsListActivity extends Activity {
+    static String avlMoney;
+    static double tMoney = 0;
+    static double restMoney = 0;
     Cursor c = null;
     DBShopper dbShopper;
     List<Product> model= new ArrayList<Product>();
@@ -45,8 +48,22 @@ public class ProductsListActivity extends Activity {
         dbShopper = new DBShopper(this);
         SQLiteDatabase db = dbShopper.getWritableDatabase();
 
+        c = db.query("carts", (new String[] {"money as availableCash" }), "cartID == ?",  ( new String[] {cartID}), null, null, null);
+        if (c.moveToFirst()) {
+            int avlMoneyColIndex = c.getColumnIndex("availableCash");
+            do {
+                avlMoney = c.getString(avlMoneyColIndex);
+                } while (c.moveToNext());
+        }
+
+        TextView cash = (TextView)findViewById(R.id.availableCash);
+        TextView checkOut = (TextView)findViewById(R.id.checkOut);
+        TextView rest = (TextView)findViewById(R.id.rest);
+
+        cash.setText(avlMoney);
+
         String table = "products as PR inner join orders as OD on PR.productID = OD.productID";
-        String columns[] = {"PR.productName as Name", "PR.price as Price", "OD.amount as Amount", "OD.totalPrice as totalPr"};
+        String columns[] = {"PR.productName as Name", "PR.price as Price", "OD.amount as Amount", "OD.totalPrice as totalPr" };
         String selection = "OD.cartID == ?";
         String[] selectionArgs = {cartID};
         c = db.query(table, columns, selection, selectionArgs, null, null, "OD.orderID " + " DESC");
@@ -62,17 +79,21 @@ public class ProductsListActivity extends Activity {
                 String productPrice = c.getString(priceColIndex) ;
                 String productAmount = c.getString(amountColIndex) ;
                 String totalPrice = c.getString(totalPriceColIndex);
+                tMoney = tMoney + Double.parseDouble(totalPrice);
+                restMoney = Double.parseDouble(avlMoney) -  tMoney;
+
                 Product product = new Product(productName,productPrice,productAmount,totalPrice);
                 adapter.add(product);
                 Log.d("product list:::::::::::::::", productName+", "+productPrice+" ,"+ productAmount+", "+totalPrice);
 
             } while (c.moveToNext());
         }
+        checkOut.setText(String.valueOf(tMoney));
+        rest.setText(String.valueOf(restMoney));
+
+
+
         dbShopper.close();
-
-
-
-
 
     }
 
@@ -119,6 +140,7 @@ public class ProductsListActivity extends Activity {
         private TextView amount = null;
         private TextView price=null;
         private TextView hallPrice=null;
+
 
         ProductHolder(View row) {
             name=(TextView)row.findViewById(R.id.productNameRow);
