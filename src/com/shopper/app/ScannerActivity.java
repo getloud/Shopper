@@ -50,8 +50,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         productName = (EditText) findViewById(R.id.productName);
         productPrice = (EditText) findViewById(R.id.price);
         amount = (EditText) findViewById(R.id.amount);
-        addProduct =(Button)findViewById(R.id.addProduct);
-
+        addProduct = (Button) findViewById(R.id.addProduct);
 
 
         mBarcodePicker = new ScanditSDKBarcodePicker(ScannerActivity.this, sScanditSdkAppKey);
@@ -75,28 +74,76 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         SQLiteDatabase db = dbShopper.getWritableDatabase();
         switch (view.getId()) {
             case R.id.addProduct:
-                ContentValues cv = new ContentValues();
 
-                int productAmount = Integer.parseInt(amount.getText().toString());
-                double totalPrice =  ((double)(productAmount)*Double.parseDouble(productPrice.getText().toString()));
+                String selection = "cartID == ?";
+                String column = "productID, orderID, amount,totalPrice";
+                String[] columns = new String[]{column};
+                String[] selectionArgs = new String[]{cartID};
+                c = db.query("orders", columns, selection, selectionArgs, null, null, null);
+                if (c.moveToFirst()) {
 
-                cv.put("cartID", cartID);
-                cv.put("productID", productID);
-                cv.put("amount",productAmount );
-                cv.put("totalPrice", totalPrice);
+                    int idPrColIndex = c.getColumnIndex("productID");
+                    int idOrColIndex = c.getColumnIndex("orderID");
+                    int totalPrColIndex = c.getColumnIndex("totalPrice");
+                    int amColIndex = c.getColumnIndex("amount");
 
-                long rowID = db.insert("orders", null, cv);
-                Log.d("my_logs", "row inserted, ID = " + rowID);
+                    do {
 
-                dbShopper.close();
+                        String prdID = c.getString(idPrColIndex);
+                        String orID = c.getString(idOrColIndex);
+                        double totalPr = Double.parseDouble(c.getString(totalPrColIndex));
+                        int am = Integer.parseInt(c.getString(amColIndex));
+                        if (productID.equals(prdID)) {
+                            ContentValues contentV = new ContentValues();
+                            contentV.put("amount", am + Integer.parseInt(amount.getText().toString()));
+                            contentV.put("totalPrice", totalPr + Double.parseDouble(productPrice.getText().toString()));
+                            int updCount = db.update("orders", contentV, "orderID = ?", new String[]{orID});
+
+                        } else {
+                            ContentValues cv = new ContentValues();
+
+                            int productAmount = Integer.parseInt(amount.getText().toString());
+                            double totalPrice = ((double) (productAmount) * Double.parseDouble(productPrice.getText().toString()));
+
+                            cv.put("cartID", cartID);
+                            cv.put("productID", productID);
+                            cv.put("amount", productAmount);
+                            cv.put("totalPrice", totalPrice);
+
+                            long rowID = db.insert("orders", null, cv);
+                            Log.d("my_logs", "row inserted, ID = " + rowID);
+
+
+                        }
+
+
+                    } while (c.moveToNext());
+
+
+                } else {
+                    ContentValues cv = new ContentValues();
+
+                    int productAmount = Integer.parseInt(amount.getText().toString());
+                    double totalPrice = ((double) (productAmount) * Double.parseDouble(productPrice.getText().toString()));
+
+                    cv.put("cartID", cartID);
+                    cv.put("productID", productID);
+                    cv.put("amount", productAmount);
+                    cv.put("totalPrice", totalPrice);
+
+                    long rowID = db.insert("orders", null, cv);
+                    Log.d("my_logs", "row inserted, ID = " + rowID);
+                }
                 break;
         }
+        dbShopper.close();
     }
 
     @Override
     public void didCancel() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
     @Override
     protected void onPause() {
         // When the activity is in the background immediately stop the
