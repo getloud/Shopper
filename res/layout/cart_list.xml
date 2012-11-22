@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ListView  xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/carts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/white">
+        <TextView android:text="Status"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"/>
+                />
+        <TextView android:text="Cart"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"/>
+        <TextView android:text="Opened"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"/>
+        <TextView android:text="Closed"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"/>
+    </LinearLayout>
+        <ListView
+                android:id="@+id/carts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
         </ListView>
+</LinearLayout>

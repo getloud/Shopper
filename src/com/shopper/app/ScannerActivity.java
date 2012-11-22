@@ -15,6 +15,10 @@ import android.widget.RelativeLayout;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: oleksandr.lezvinskyi
@@ -31,6 +35,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
     EditText amount = null;
     Cursor c = null;
     Button addProduct = null;
+    Button finishShop = null;
     String cartID = "";
     String productID = "";
 
@@ -51,6 +56,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         productPrice = (EditText) findViewById(R.id.price);
         amount = (EditText) findViewById(R.id.amount);
         addProduct = (Button) findViewById(R.id.addProduct);
+        finishShop = (Button) findViewById(R.id.finishShopping);
 
 
         mBarcodePicker = new ScanditSDKBarcodePicker(ScannerActivity.this, sScanditSdkAppKey);
@@ -63,6 +69,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         mBarcodePicker.startScanning();
 
         addProduct.setOnClickListener(this);
+        finishShop.setOnClickListener(this);
 
         Intent intent = getIntent();
         cartID = intent.getStringExtra("cartID");
@@ -116,6 +123,17 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
                     Log.d("my_logs", "row inserted, ID = " + rowID);
                 }
                 break;
+            case R.id.finishShopping:
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                Date date = new Date();
+
+                ContentValues cv = new ContentValues();
+
+                cv.put("endDate", dateFormat.format(date));
+                db.update("carts", cv, "cartID == ?", new String[]{cartID});
+                dbShopper.close();
+                finish();
+
         }
         dbShopper.close();
     }

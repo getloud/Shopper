@@ -9,11 +9,34 @@ package com.shopper.app;
  */
 public class Cart {
     private String cartName;
-    private String date;
+    private String startDate;
 
-    public Cart(String cartName, String date) {
+    public String getCartID() {
+        return cartID;
+    }
+
+    public void setcartID(String cartID) {
+        cartID = cartID;
+    }
+
+    private String cartID;
+
+    public String getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    private String finishDate;
+
+    public Cart( String cartID, String cartName, String startDate, String finishDate) {
+        this.cartID = cartID;
         this.cartName = cartName;
-        this.date = date;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+
     }
 
     public String getCartName() {
@@ -24,11 +47,11 @@ public class Cart {
         this.cartName = cartName;
     }
 
-    public String getDate() {
-        return date;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }
