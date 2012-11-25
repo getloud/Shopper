@@ -54,6 +54,7 @@ public class CartsListActivity extends Activity {
                 Cart cart = new Cart(cartID, name, sDate, fDate);
                 adapter.add(cart);
 
+
             } while (c.moveToNext());
         }
         dbShopper.close();
@@ -69,12 +70,18 @@ public class CartsListActivity extends Activity {
                                         View view, int position,
                                         long id) {
                     Cart c = model.get(position);
+                   String a = c.getFinishDate();
 
-                    if (c.getFinishDate().isEmpty()){}
+                    if (c.getFinishDate()== null){
+                        Intent intent = new Intent(CartsListActivity.this, CartTabsActivity.class);
+                        intent.putExtra("cartID", String.valueOf(c.getCartID()));
+                        startActivity(intent);
+                    }
                     else
                     {
                         Intent intent = new Intent(CartsListActivity.this, ProductsListActivity.class);
                         intent.putExtra("cartID", String.valueOf(c.getCartID()));
+                        intent.putExtra("useBack", "1");
                         startActivity(intent);
                     }
                 }
@@ -122,4 +129,12 @@ public class CartsListActivity extends Activity {
             icon.setImageResource(R.drawable.ball_green);
         }
     }
+
+    @Override
+    protected void onPause() {
+        finish();
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+
 }

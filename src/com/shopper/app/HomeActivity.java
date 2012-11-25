@@ -3,6 +3,7 @@ package com.shopper.app;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +28,8 @@ public class HomeActivity extends Activity   implements View.OnClickListener
     PopupWindow mpopup;
     Intent intentCartTab;
     Intent intentHistory;
-
+    DBShopper  dbShopper;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,30 @@ public class HomeActivity extends Activity   implements View.OnClickListener
 
         @Override
         public void onClick(View view) {
+            dbShopper = new DBShopper(HomeActivity.this);
+            db = dbShopper.getWritableDatabase();
             switch (view.getId()) {
-                case R.id.startSh:
+
+              case R.id.startSh:
+
+                  Cursor dateCursor = null;
+
+                  String selection = "endDate is null";
+                  String column = "cartID";
+                  String[] columns = new String[]{column};
+                  dateCursor = db.query("carts", columns, selection, null, null, null, null);
+
+                  if (dateCursor.moveToFirst()) {
+                      int idColIndex = dateCursor.getColumnIndex("cartID");
+                      String cartID = dateCursor.getString(idColIndex);
+
+                      intentCartTab = new Intent(HomeActivity.this, CartTabsActivity.class);
+                      intentCartTab.putExtra("cartID", cartID);
+                      startActivity(intentCartTab);
+
+                  } else
+
+                  {
 
           final  View popUpView = getLayoutInflater().inflate(R.layout.create_cart_window, null); // inflating popup layout
            mpopup = new PopupWindow(popUpView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true); //Creation of popup
@@ -73,8 +97,8 @@ public class HomeActivity extends Activity   implements View.OnClickListener
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                     Date date = new Date();
 
-                    DBShopper  dbShopper = new DBShopper(HomeActivity.this);
-                    SQLiteDatabase db = dbShopper.getWritableDatabase();
+                   dbShopper = new DBShopper(HomeActivity.this);
+                   db = dbShopper.getWritableDatabase();
 
                     ContentValues cv = new ContentValues();
 
@@ -105,6 +129,7 @@ public class HomeActivity extends Activity   implements View.OnClickListener
                     mpopup.dismiss();
                 }
             });
+            }
             break;
                 case R.id.historySh:
                     intentHistory = new Intent(HomeActivity.this, CartsListActivity.class);

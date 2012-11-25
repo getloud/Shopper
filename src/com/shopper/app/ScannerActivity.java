@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.mirasense.scanditsdk.ScanditSDKBarcodePicker;
 import com.mirasense.scanditsdk.interfaces.ScanditSDKListener;
 
@@ -85,7 +86,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
                 String selection = "cartID == ? and productID == ?";
                 String column = "productID, orderID, amount";
                 String[] columns = new String[]{column};
-                String[] selectionArgs = new String[]{cartID,productID};
+                String[] selectionArgs = new String[]{cartID, productID};
                 c = db.query("orders", columns, selection, selectionArgs, null, null, null);
 
                 if (c.moveToFirst()) {
@@ -98,12 +99,17 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
 
                         String prdID = c.getString(idPrColIndex);
                         String orID = c.getString(idOrColIndex);
-                         int am = Integer.parseInt(c.getString(amColIndex));
+                        int am = Integer.parseInt(c.getString(amColIndex));
 
-                            ContentValues contentV = new ContentValues();
-                            contentV.put("amount", am + Integer.parseInt(amount.getText().toString()));
-                            contentV.put("totalPrice", ( am + Integer.parseInt(amount.getText().toString()))* Double.parseDouble(productPrice.getText().toString()));
-                            int updCount = db.update("orders", contentV, "orderID = ? and productID == ?", new String[]{orID, prdID});
+                        ContentValues contentV = new ContentValues();
+                        contentV.put("amount", am + Integer.parseInt(amount.getText().toString()));
+                        contentV.put("totalPrice", (am + Integer.parseInt(amount.getText().toString())) * Double.parseDouble(productPrice.getText().toString()));
+                        int updCount = db.update("orders", contentV, "orderID = ? and productID == ?", new String[]{orID, prdID});
+                       productBarcode.setText("");
+                        productName.setText("");
+                        productPrice.setText("");
+                        amount.setText("");
+
 
                     } while (c.moveToNext());
 
@@ -118,9 +124,13 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
                     cv.put("productID", productID);
                     cv.put("amount", productAmount);
                     cv.put("totalPrice", totalPrice);
+                    db.insert("orders", null, cv);
 
-                    long rowID = db.insert("orders", null, cv);
-                    Log.d("my_logs", "row inserted, ID = " + rowID);
+                    productBarcode.setText("");
+                    productName.setText("");
+                    productPrice.setText("");
+                    amount.setText("");
+
                 }
                 break;
             case R.id.finishShopping:
@@ -131,6 +141,13 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
 
                 cv.put("endDate", dateFormat.format(date));
                 db.update("carts", cv, "cartID == ?", new String[]{cartID});
+
+//                TextView chkout = (TextView)findViewById(R.id.checkOut);
+//                TextView rest = (TextView)findViewById(R.id.rest);
+//                chkout.setText("0");
+//                rest.setText("0");
+                ProductsListActivity.tMoney = 0;
+                ProductsListActivity.restMoney = 0;
                 dbShopper.close();
                 finish();
 
@@ -162,8 +179,7 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
         if (mBarcodePicker != null) {
             mBarcodePicker.startScanning();
         }
-            super.onResume();
-
+        super.onResume();
 
 
     }
@@ -195,8 +211,12 @@ public class ScannerActivity extends Activity implements ScanditSDKListener, Vie
                 productID = c.getString(idColIndex);
                 productName.setText(c.getString(nameColIndex));
                 productPrice.setText(c.getString(priceColIndex));
+                amount.setText("");
+
 
             } while (c.moveToNext());
+            ProductsListActivity.tMoney = 0;
+            ProductsListActivity.restMoney = 0;
         } else {
             productName.setText("NO prod");
         }

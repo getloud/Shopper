@@ -32,6 +32,7 @@ public class ProductsListActivity extends Activity {
     List<Product> model= new ArrayList<Product>();
     ProductAdapter adapter=null;
     String  cartID ;
+   String back ;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class ProductsListActivity extends Activity {
 
         Intent intent = getIntent();
         cartID = intent.getStringExtra("cartID");
+        back = intent.getStringExtra("useBack");
 
         dbShopper = new DBShopper(this);
         SQLiteDatabase db = dbShopper.getWritableDatabase();
@@ -157,4 +159,16 @@ public class ProductsListActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(back != null){
+            Intent backInt = new Intent(this, CartsListActivity.class);
+            startActivity(backInt);
+            super.onBackPressed();
+        }
+        else{
+        finish();
+        super.onBackPressed();
+        }//To change body of overridden methods use File | Settings | File Templates.
+    }
 }
