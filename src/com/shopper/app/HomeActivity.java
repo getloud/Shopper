@@ -65,12 +65,12 @@ public class HomeActivity extends Activity   implements View.OnClickListener
                   dateCursor = db.query("carts", columns, selection, null, null, null, null);
 
                   if (dateCursor.moveToFirst()) {
-                      int idColIndex = dateCursor.getColumnIndex("cartID");
-                      String cartID = dateCursor.getString(idColIndex);
-
-                      intentCartTab = new Intent(HomeActivity.this, CartTabsActivity.class);
-                      intentCartTab.putExtra("cartID", cartID);
-                      startActivity(intentCartTab);
+//                      int idColIndex = dateCursor.getColumnIndex("cartID");
+//                      String cartID = dateCursor.getString(idColIndex);
+//
+//                      intentCartTab = new Intent(HomeActivity.this, CartTabsActivity.class);
+//                      intentCartTab.putExtra("cartID", cartID);
+//                      startActivity(intentCartTab);
 
                   } else
 
